@@ -7,35 +7,29 @@ import pickle
 pickle_in = open("training_data.pickle", "rb")
 training_data = pickle.load(pickle_in)
 
-
 df = pd.DataFrame(training_data)
 print(df.head())
 print(Counter(df[1].apply(str)))
-
-
 
 lefts = []
 rights = []
 forwards = []
 
-
 shuffle(training_data)
 
 for data in training_data:
     img = data[0]
-    choice = np.argmax(data[1])
+    choice = data[1]
     print(choice)
 
-    if choice == 0:
-        lefts.append([img,choice])
-    elif choice == 1:
-        rights.append([img,choice])
-    elif choice == 2:
-        forwards.append([img,choice])
+    if choice == [0, 1, 0]:
+        lefts.append([img, choice])
+    elif choice == [0, 0, 1]:
+        rights.append([img, choice])
+    elif choice == [1, 0, 0]:
+        forwards.append([img, choice])
     else:
         print('no matches')
-
-
 
 min_samples = min(len(lefts), len(rights), len(forwards))
 forwards = forwards[:min_samples]
@@ -50,13 +44,12 @@ final_data = forwards + lefts + rights
 shuffle(final_data)
 
 balanced_training_data = [[], []]
-for data in final_data :
+for data in final_data:
     image = data[0]
     choice = data[1]
     balanced_training_data[0].append(image)
     balanced_training_data[1].append(choice)
 
-
-pickle_out = open("training_data_balanced.pickle","wb")
+pickle_out = open("training_data_balanced.pickle", "wb")
 pickle.dump(balanced_training_data, pickle_out)
 pickle_out.close()
