@@ -3,12 +3,11 @@ import numpy as np
 import cv2
 import pickle
 import time
-#from pynput import keyboard
-#from pynput.keyboard import Key, Listener
 from getkeys import key_check
 import pandas as pd
 from collections import Counter
 from random import shuffle
+seconds_to_run = int(input('How many seconds to run? ')) # run for a certain amount of seconds
 # adw
 w = [1, 0, 0]
 a = [0, 1, 0]
@@ -32,44 +31,6 @@ def keys_to_output(keys):
         output = w
     return output
 
-# current_label = None
-#
-#
-# def on_press(key):
-#     global current_label
-#
-#     print(key)
-#     if key == "a":
-#         current_label = 0
-#     elif key == "d":
-#         current_label = 1
-#     else:
-#         current_label = 2
-#
-#
-# def on_release(key):
-#     global current_label
-#
-#     current_label = 2
-#
-#
-# listener = Listener(on_press=on_press, on_release=on_release)
-# listener.start()
-
-'''
-def on_press(key):
-    print(key)
-    if key == "a":
-        training_data[1].append(possible_key_presses[0])
-    elif key == "d":
-        training_data[1].append(possible_key_presses[1])
-    else:
-        training_data[1].append(possible_key_presses[2])
-
-listener = keyboard.Listener(on_press=on_press)
-listener.start()
-'''
-
 training_data = []
 
 print("3")
@@ -78,9 +39,9 @@ print("2")
 time.sleep(1)
 print("1")
 time.sleep(1)
-print("starting creation of training data!")
-
-for i in range(100):
+print("Creating training data for {0} seconds".format(str(seconds_to_run)))
+start_time = time.time()
+while(int(time.time()-start_time)<seconds_to_run):
     with mss() as sct:
         screenshot = sct.shot()
         keys = key_check()
